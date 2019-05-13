@@ -1,0 +1,71 @@
+#include<stdio.h>
+
+void main()
+{
+	char num[11],i,j,k,cnt=0;
+
+	printf("enter the sequence of 10 digit binary numbers \n");
+	for (i = 0; i < 10; i++)
+	{
+		scanf("%c",&num[i]);
+	}
+	printf("the numbers entered are\n");
+	for (i = 0; i < 10; i++)
+	{
+		printf("%c\n",num[i]);
+	}
+	printf("after stuffing\n");
+	i=0;
+	while(i<10)
+	{
+		if(num[i]=='1')
+		{
+			i++;
+			cnt++;
+			if(cnt==5)
+			{
+				for (k =11; k < i;k--)
+				{
+					num[k]=num[k-1];
+				}
+				num[i]=0;
+				num[i]='0';
+			}
+		}
+		else
+		{
+			i++;
+			cnt=0;
+		}
+	}
+	for(i=0;i<11;i++)
+		printf("%c\n",num[i] );
+	
+
+	printf("after destuffing\n");
+	i=0;
+	while(i<10)
+	{
+		if(num[i]=='1')
+		{
+			i++;
+			cnt++;
+			if(cnt==5)
+			{
+				for (k =i; k <11;k++)
+				{
+					num[k]=num[k+1];
+				}
+				
+			}
+			else
+			{
+				i++;
+				cnt=0;
+			}
+		}
+		
+	for(i=0;i<10;i++)
+		printf("%d\n",num[i]-48 );
+    }
+}
