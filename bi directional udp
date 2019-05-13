@@ -1,0 +1,54 @@
+SENDER
+import java.net.*;
+import java.io.*;
+class UDPSENDERBIDIRECT
+{
+public static void main(String args[]) throws Exception
+{
+InetAddress rechost=InetAddress.getByName("localhost");
+int recport=3333;
+DatagramSocket ds=new DatagramSocket(2222);
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+String msg1="",msg2="";
+byte buf[]=new byte[400];
+while(!msg1.equals("bye"))
+{
+msg1=(String)br.readLine();
+byte arr[]=msg1.getBytes();
+DatagramPacket dp1=new DatagramPacket(arr,arr.length,rechost,recport);
+ds.send(dp1);
+DatagramPacket dp2=new DatagramPacket(buf,400);
+ds.receive(dp2);
+msg2=new String(dp2.getData(),0,dp2.getLength());
+System.out.println("reciver says::"+msg2);
+}
+ds.close();
+}
+}
+RECEIVER
+import java.net.*;
+import java.io.*;
+class UDPRECIEVERBIDIRECT
+{
+public static void main(String args[])throws Exception
+{
+InetAddress rechost=InetAddress.getByName("localhost");
+int recport=2222;
+DatagramSocket ds=new DatagramSocket(3333);
+byte buf[]=new byte[400];
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+String msg1="",msg2="";
+while(!msg2.equals("bye"))
+{
+DatagramPacket dp2=new DatagramPacket(buf,400);
+ds.receive(dp2);
+msg2=new String(dp2.getData(),0,dp2.getLength());
+System.out.println("sender says::"+msg2);
+msg1=(String)br.readLine();
+byte arr[]=msg1.getBytes();
+DatagramPacket dp1=new DatagramPacket(arr,arr.length,rechost,recport);
+ds.send(dp1);
+}
+ds.close();
+}
+}
