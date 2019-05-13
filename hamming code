@@ -1,0 +1,108 @@
+#include<stdio.h>
+#include<conio.h>
+#include<math.h>
+void main()
+{
+int m,r,i,j,k,err,l;
+int a[20]={0},p[20]={0},b1[20],b2[20][20]={0},q[20][20]={0},s[20], n[20]={0},c[20]={0},flag=0;
+printf("\nEnter the no of bits in the data string:");
+scanf("%d",&m);
+for(i=1;i<=m;i++)
+{
+if(pow(2,i)>=(m+i+1))
+{
+r=i;
+break;
+}
+}
+printf("\nNo of redundant bits:");
+printf("%d",r);
+printf("\nEnter the data string:");
+for(i=m+r;i>r;i--)
+scanf("%d",&a[i]);
+for(i=r;i>0;i--)
+a[i]=-1;
+for(i=0;i<r;i++)
+{
+p[i]=pow(2,i);
+if(p[i]>r)
+{
+a[i]=a[p[i]];
+for(l=0;l<abs(p[i]-r-1);l++)
+s[l]=a[p[i]-l];
+l=0;
+for(j=p[i];j>r;j--)
+{
+a[j-1]=s[l];
+l++;
+}
+a[p[i]]=-1;
+}
+}
+for(i=m+r;i>0;i--)
+{
+k=i;
+for(j=0; ;j++)
+{
+if(k!=0)
+{
+b2[i][j]=k%2;
+b1[j]=k/2;
+k=b1[j];
+}
+else
+break;
+}
+}
+for(j=0;j<r;j++)
+{
+for(i=m+r;i>0;i--)
+{
+if(b2[i][j]==1)
+q[j][m+r-i]=i;
+n[j]++;
+}
+}
+for(j=0;j<r;j++)
+{
+for(i=0;i<n[j];i++)
+{
+if(a[q[j][i]]==1)
+c[j]++;
+}
+if(c[j]%2==0)
+a[p[j]]=0;
+else
+a[p[j]]=1;
+}
+printf("\nThe data string sent by the sender:");
+for(i=m+r;i>0;i--)
+{
+c[i]=a[i];
+printf("%d",a[i]);
+}
+printf("\nDo you want to create any error(Y-1/N-0)\n");
+scanf("%d",&err);
+if(err==1)
+{
+printf("\nEnter the position for error\n");
+scanf("%d",&err);
+c[err]=!c[err];
+}
+printf("\nThe data string received by the receiver:");
+for(i=m+r;i>0;i--)
+printf("%d",c[i]);
+for(i=m+r;i>0;i--)
+{
+c[i]=(c[i]^a[i]);
+if(c[i]==1)
+{
+flag=1;
+break;
+}
+}
+if(flag==1)
+printf("\nThe data string has error at position %d and is rejected.",i);
+else
+printf("\nThe data string has no error and is accepted.");
+}
